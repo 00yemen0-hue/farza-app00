@@ -37,6 +37,12 @@ jobs:
         run: |
           keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
 
+      - name: Inject Gemini API Key Safely
+        run: |
+          # إنشاء ملفات الإعدادات وتغذيتها بالمفتاح السري بشكل آمن أثناء البناء
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
+          echo "apiKey=${{ secrets.GEMINI_API_KEY }}" > local.properties
+
       - name: Build APK
         run: |
           if [ -f "gradlew" ]; then
